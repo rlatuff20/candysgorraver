@@ -203,12 +203,26 @@
             setTimeout(() => target.classList.remove(className), 400);
         }
 
-        function enviarPedido() {
-            if(cart.length === 0) return alert("Carrito vacío");
-            let msg = "¡Holaa! quisiera hacer un pedido:%0A";
-            cart.forEach(i => msg += `- ${i.qty}x ${i.name}%0A`);
-            window.open(`https://wa.me/584248959934?text=${msg}`, '_blank');
-        }
+    function enviarPedido() {
+    if(cart.length === 0) return alert("Carrito vacío");
+    
+    let msg = "¡Holaa! quisiera hacer un pedido:%0A%0A";
+    
+    // 1. Agregamos cada producto con su cantidad, nombre y precio individual
+    cart.forEach(item => {
+        msg += `▪️ ${item.qty}x ${item.name} ($${item.price.toFixed(2)})%0A`;
+    });
+
+    // 2. Calculamos el total (nota que usamos item.qty)
+    const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    
+    // 3. Agregamos el total y la pregunta de los métodos de pago
+    msg += `%0A💰 *Total a pagar: $${total.toFixed(2)}*`;
+    msg += `%0A%0A¿Cuáles son los métodos de pago disponibles?`;
+
+    // 4. Abrimos el enlace de WhatsApp
+    window.open(`https://wa.me/584248959934?text=${msg}`, '_blank');
+}
 
         renderProducts();
     </script>
